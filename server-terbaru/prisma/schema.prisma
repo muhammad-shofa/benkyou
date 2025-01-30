@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  username String
+  password String
+  name String
+  full_name String
+  no_hp Int
+  email String
+  role String
+  profile_picture String?
+  create_at DateTime @default(now())
+
+  classes Class[] @relation("TeacherClasses")
+  quizResults QuizResult[]
+
+  @@map("users")
+}
+
+model Class {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  description String
+  teacher_id  String   @db.ObjectId
+  students    String[] 
+  materials  Material[]  @relation("ClassToMaterials")
+  quizzes  String[]
+  create_at DateTime @default(now())
+
+  teacher User @relation("TeacherClasses", fields: [teacher_id], references: [id])
+
+  @@map("class")
+}
+
+// Material[] relasi one to many
+
+model Material {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  teacher_id String   @db.ObjectId
+  title     String
+  content_type String
+  content_text  String?
+  name_pdf      String?
+  data_pdf      Bytes?
+  mimetype_pdf  String?
+  create_at DateTime @default(now()) @map("created_at")
+
+  classId String
+  class     Class   @relation("ClassToMaterials", fields: [classId], references: [id]) 
+  
+  @@map("materials")
+}
+
+model Quiz {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  class_id   String         @db.ObjectId
+  title     String
+  questions Json
+  created_at DateTime       @default(now()) @map("created_at")
+
+  results    QuizResult[]
+  
+  @@map("quiz")
+}
+
+model QuizResult {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  quiz_id     String    @db.ObjectId
+  student_id  String    @db.ObjectId
+  score       Float
+  answer      Json
+  created_at  DateTime  @default(now())
+  
+
+  quiz        Quiz      @relation(fields: [quiz_id], references: [id])
+  student     User      @relation(fields: [student_id], references: [id])
+
+  @@map("quiz_result")
+}
+
+
+// @@map() digunakan untuk menentukan nama collection apda database
+
+// karena prisma tidak mendukung tipe data Number dan hanya mendukung Int dan Float untuk angka namun saya memilih menggunakan tipe data String agar nomor 0 di depannya tidak hilang
+
+
+// setelah selesai membuat schema pada prisma lalu jalankan
+// "npx prisma generate" pada command line

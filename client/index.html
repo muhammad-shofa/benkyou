@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Benkyou Test</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <!-- font awesome -->
+    <script src="https://kit.fontawesome.com/e91d75df7f.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/particlesjs/2.2.2/particles.min.js"></script> -->
+     <!-- particle js -->
+    <script src="src/particlesjs/dist/particles.min.js"></script>
+    <script>
+      window.onload = function () {
+        Particles.init({
+          selector: ".background",
+          connectParticles: true,
+          maxParticles: 170,
+          color: "#361f8e",
+        });
+      };
+    </script>
+  </body>
+</html>
