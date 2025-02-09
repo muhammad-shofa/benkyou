@@ -113,7 +113,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
                 </span>
                 {isSidebarOpen && <span>Class</span>}
               </li>
-              <li
+              {/* <li
                 onClick={() => navigate("/materials-dashboard")}
                 className="text-black text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-[#7752FE] hover:text-white duration-200 rounded-md"
               >
@@ -156,7 +156,7 @@ function Sidebar({ isSidebarOpen, toggleSidebar }) {
                   </svg>
                 </span>
                 {isSidebarOpen && <span>Quiz</span>}
-              </li>
+              </li> */}
               <li className="text-black text-sm flex items-center gap-x-4 cursor-pointer p-2  hover:bg-[#7752FE] hover:text-white duration-200 rounded-md">
                 <span className="text-lg">
                   <svg

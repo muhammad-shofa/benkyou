@@ -14,6 +14,7 @@ const TableQuizzes = () => {
   const [isModalDetailsQuestionOpen, setIsModalDetailsQuestionOpen] =
     useState(false);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const teacher_id = localStorage.getItem("id");
   const [newQuizzes, setNewQuizzes] = useState({
@@ -51,8 +52,8 @@ const TableQuizzes = () => {
     setIsEditPopupOpen(true);
   };
 
-  const handleDeleteClick = (material) => {
-    setSelectedMaterial(material);
+  const handleDeleteClick = (quiz) => {
+    setSelectedQuiz(quiz);
     setIsDeletePopupOpen(true);
   };
 
@@ -141,7 +142,8 @@ const TableQuizzes = () => {
     // Lakukan penghapusan data
     try {
       const response = await fetch(
-        `http://localhost:3000/api/delete-material/${selectedMaterial.id}`,
+        // `http://localhost:3000/api/delete-quiz/${selectedMaterial.id}`,
+        `http://localhost:3000/api/delete-quiz/${selectedQuiz._id}`,
         {
           method: "DELETE",
         }
@@ -151,7 +153,7 @@ const TableQuizzes = () => {
         alert("Data berhasil dihapus");
         // Perbarui data tabel dengan menghapus data yang dihapus
         setData((prevData) =>
-          prevData.filter((material) => material.id !== selectedMaterial.id)
+          prevData.filter((quiz) => quiz._id !== selectedQuiz._id)
         );
       } else {
         alert("Gagal menghapus data");
@@ -162,35 +164,6 @@ const TableQuizzes = () => {
 
     handleCloseDeletePopup();
   };
-
-  // const handleAddQuizzes = async () => {
-  //   // Lakukan penyimpanan data quiz baru
-  //   try {
-  //     const response = await fetch(
-  //       "http://localhost:3000/api/create-quiz", // Buat routenya di backend
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(newQuizzes),
-  //       }
-  //     );
-  //     const result = await response.json();
-  //     if (result.success) {
-  //       alert("Data berhasil ditambahkan");
-  //       console.log("Data berhasil ditambahkan");
-  //       // Perbarui data tabel dengan data yang baru ditambahkan
-  //       setData((prevData) => [...prevData, result.data]);
-  //     } else {
-  //       console.error("Gagal menambahkan data");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error menambahkan data:", error);
-  //   }
-
-  //   handleCloseAddPopup();
-  // };
 
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState("");
@@ -237,7 +210,7 @@ const TableQuizzes = () => {
     console.log("Data quiz baru : ", newQuiz);
 
     try {
-      const response = await fetch("http://localhost:3000/api/quiz", {
+      const response = await fetch("http://localhost:3000/api/create-quiz", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -258,22 +231,11 @@ const TableQuizzes = () => {
     }
   };
 
-  // Menyimpan quiz
-  // const handleSave = () => {
-  //   const newQuiz = {
-  //     teacher_id: teacher_id,
-  //     title,
-  //     questions,
-  //     created_at: new Date().toISOString(),
-  //   };
-  //   onSave(newQuiz);
-  // };
-
   return (
     <div>
       <button
         className="border rounded mb-4 border-green-500 bg-green-500 text-white hover:bg-white hover:text-green-600 px-4 py-1 m-1"
-        onClick={() => setShowModal(true)}
+        onClick={() => handleAddClick()}
       >
         <i className="fa-solid fa-plus"></i> Quiz
       </button>
@@ -651,7 +613,7 @@ const TableQuizzes = () => {
       )} */}
 
       {/* add popup modal */}
-      {showModal && (
+      {isAddPopupOpen && (
         <div className="fixed inset-0 flex items-center py-10 justify-center overflow-auto bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-[500px]">
             <h2 className="text-2xl font-bold mb-4">Add New Quiz</h2>
@@ -722,13 +684,13 @@ const TableQuizzes = () => {
             </button>
             <div className="flex justify-end mt-4">
               <button
-                onClick={handleSaveQuiz}
+                onClick={() => handleSaveQuiz()}
                 className="bg-green-500 text-white px-4 py-2 rounded mr-2"
               >
                 Save Quiz
               </button>
               <button
-                onClick={handleCloseAddPopup}
+                onClick={() => handleCloseAddPopup()}
                 className="bg-gray-500 text-white px-4 py-2 rounded"
               >
                 Cancel

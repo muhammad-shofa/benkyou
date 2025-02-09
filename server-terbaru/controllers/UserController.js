@@ -272,7 +272,6 @@ const countCollections = async (req, res) => {
   try {
     // const db = getDb();
     const db = client.db("benkyou");
-    
     const [userCount, classCount, materialCount, quizCount] = await Promise.all(
       [
         db.collection("users").countDocuments(),

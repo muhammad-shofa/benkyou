@@ -119,6 +119,40 @@ const createQuiz = async (req, res) => {
   }
 };
 
+// Delete Quiz
+const deleteQuiz = async (req, res) => {
+  const quiz_id = req.params.quiz_id;
+
+  try {
+    await client.connect();
+    const db = client.db("benkyou"); // Ganti dengan nama database
+    const collection = db.collection("quiz"); // Ganti dengan nama koleksi yang sesuai
+
+    const result = await collection.deleteOne({
+      _id: new ObjectId(quiz_id),
+    });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Quiz not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Quiz deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
 // const createQuiz = async (req, res) => {
 //   try {
 //     const { title, questions, created_at } = req.body;
@@ -264,4 +298,5 @@ module.exports = {
   findQuizzes,
   detailsQuizQuestion,
   createQuiz,
+  deleteQuiz,
 };

@@ -79,23 +79,40 @@ const jwt = require("jsonwebtoken");
 const uri = "mongodb://localhost:27017";
 const client = new MongoClient(uri);
 
-// Function findClass
+// findClass
 const findClass = async (req, res) => {
   try {
     // Koneksi ke database
     const client = await MongoClient.connect("mongodb://localhost:27017");
-    const db = client.db("benkyou"); // Ganti dengan nama database kamu
-    const classCollection = db.collection("class"); // Ganti dengan nama collection kamu
+    const db = client.db("benkyou");
+    const classCollection = db.collection("class");
 
-    // Mendapatkan semua data class dari database
+    // Ambil parameter dari request
+    const userRole = req.query.role;
+    const userId = req.query.id;
+
+    console.log("userRole", userRole);
+    console.log("userId", userId);
+
+    let query = {};
+
+    if (userRole === "student") {
+      query = { students: userId };
+    } else if (userRole === "teacher") {
+      query = { teacher_id: userId };
+    } // Jika admin, query tetap kosong ({}), berarti ambil semua data
+
+    // Ambil data class sesuai query
     const classes = await classCollection
-      .find({})
+      .find(query)
       .sort({ create_at: -1 })
       .toArray();
 
+    console.log("ini class", classes);
+
     // Format hasil untuk menampilkan jumlah students, materials, dan quizzes
     const formattedClasses = classes.map((classItem) => ({
-      id: classItem._id, // Gunakan `_id` karena MongoDB default menggunakan itu
+      id: classItem._id,
       name: classItem.name,
       description: classItem.description,
       teacher_id: classItem.teacher_id,
@@ -114,15 +131,17 @@ const findClass = async (req, res) => {
       create_at: classItem.create_at,
     }));
 
+    console.log("ini formatted classes", formattedClasses);
+
     // Kirimkan response
     res.status(200).send({
       success: true,
-      message: "Get All Posts Successfully",
+      message: "Get Classes Successfully",
       data: formattedClasses,
     });
 
     // Tutup koneksi ke database
-    client.close();
+    // client.close();
   } catch (error) {
     console.log("Error", error);
     res.status(500).send({
@@ -131,6 +150,86 @@ const findClass = async (req, res) => {
     });
   }
 };
+
+// NEW function findClass
+
+// const findClass = async (req, res) => {
+//   try {
+//     const db = client.db("benkyou");
+//     const classCollection = db.collection("class");
+
+//     const userRole = req.query.role;
+//     const userId = req.query.id;
+
+//     let query = {};
+
+//     if (userRole === "student") {
+//       query = { students: new ObjectId(userId) };
+//     } else if (userRole === "teacher") {
+//       query = { teacher_id: userId };
+//     }
+
+//     const classes = await classCollection.find(query).toArray();
+
+//     res.status(200).json({ success: true, data: classes });
+//   } catch (error) {
+//     console.error("Error fetching classes:", error);
+//     res.status(500).json({ success: false, message: "Internal Server Error" });
+//   }
+// };
+
+// Function findClass old
+// const findClass = async (req, res) => {
+//   try {
+//     // Koneksi ke database
+//     const client = await MongoClient.connect("mongodb://localhost:27017");
+//     const db = client.db("benkyou"); // Ganti dengan nama database kamu
+//     const classCollection = db.collection("class"); // Ganti dengan nama collection kamu
+
+//     // Mendapatkan semua data class dari database
+//     const classes = await classCollection
+//       .find({})
+//       .sort({ create_at: -1 })
+//       .toArray();
+
+//     // Format hasil untuk menampilkan jumlah students, materials, dan quizzes
+//     const formattedClasses = classes.map((classItem) => ({
+//       id: classItem._id,
+//       name: classItem.name,
+//       description: classItem.description,
+//       teacher_id: classItem.teacher_id,
+//       students_id: classItem.students,
+//       student_count: Array.isArray(classItem.students)
+//         ? classItem.students.length
+//         : 0,
+//       materials_id: classItem.materials,
+//       material_count: Array.isArray(classItem.materials)
+//         ? classItem.materials.length
+//         : 0,
+//       quizzes_id: classItem.quizzes,
+//       quizzes_count: Array.isArray(classItem.quizzes)
+//         ? classItem.quizzes.length
+//         : 0,
+//       create_at: classItem.create_at,
+//     }));
+
+//     // Kirimkan response
+//     res.status(200).send({
+//       success: true,
+//       message: "Get All Posts Successfully",
+//       data: formattedClasses,
+//     });
+
+//     // Tutup koneksi ke database
+//     client.close();
+//   } catch (error) {
+//     console.log("Error", error);
+//     res.status(500).send({
+//       success: false,
+//       message: "Internal server error",
+//     });
+//   }
+// };
 
 // Fungsi untuk mendapatkan detail kelas
 const detailClass = async (req, res) => {
@@ -292,7 +391,7 @@ const enteredClass = async (req, res) => {
       materials: materialsData || [],
       quizzes: quizzesData || [],
     };
-    
+
     // console.log(responseData);
 
     // Kirim respons ke client

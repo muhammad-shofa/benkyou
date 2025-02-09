@@ -1,8 +1,18 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
+
 
 function Landing() {
+  const navigate = useNavigate;
+
+  
+
+  // const try_now = () => {
+    
+  // }
+
   return (
     <>
       {/* Navbar */}
@@ -22,7 +32,9 @@ function Landing() {
             <b className="bg-slate-200 text-[#7752FE]">Benkyou.</b>
           </h1>
           <div className="button-hero flex justify-center gap-4">
-            <button className="p-2 text-lg font-bold duration-200 border-2 border-[#361f8e] bg-white text-[#361f8e] hover:bg-[#361f8e] hover:text-white">
+            <button
+              className="p-2 text-lg font-bold duration-200 border-2 border-[#361f8e] bg-white text-[#361f8e] hover:bg-[#361f8e] hover:text-white"
+            >
               Coba Sekarang
             </button>
             <button className="bg-[#361f8e] p-2 text-white text-lg font-bold duration-200 border-2 border-[#361f8e] hover:bg-white hover:text-[#361f8e]">
@@ -124,10 +136,12 @@ function Landing() {
             <b>Apa itu Benkyou?</b>
           </h1>
           <p className="text-xl">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laboriosam
-            odio atque perferendis alias excepturi nulla fugit ullam hic ab
-            necessitatibus, quis accusamus illo nesciunt nobis natus quo dolor
-            rem ut.
+            Bankyou adalah platform e-learning inovatif yang dirancang untuk
+            memberikan pengalaman belajar yang efektif, fleksibel, dan
+            interaktif bagi pengguna. Dengan berbagai materi edukatif yang
+            berkualitas, Bankyou membantu siswa, mahasiswa, serta profesional
+            dalam mengembangkan keterampilan dan pengetahuan mereka dengan
+            mudah.
           </p>
         </div>
       </div>
@@ -141,12 +155,15 @@ function Landing() {
           <p>Have any questions or feedback? Contact us immediately.</p>
         </div>
         <div className="body-contact px-5 py-10 flex justify-evenly items-center bg-white text-black">
-          <p className="max-w-[300px]">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt,
-            dolore eum dicta iusto vitae quaerat sequi eos labore et distinctio
-            inventore voluptatum maxime voluptas rem, amet facilis quidem saepe
-            unde!
-          </p>
+          <img src="contact.jpg" alt="contact img" className="w-[400px]" />
+          {/* <p className="max-w-[300px]">
+            Bankyou adalah platform e-learning inovatif yang dirancang untuk
+            memberikan pengalaman belajar yang efektif, fleksibel, dan
+            interaktif bagi pengguna. Dengan berbagai materi edukatif yang
+            berkualitas, Bankyou membantu siswa, mahasiswa, serta profesional
+            dalam mengembangkan keterampilan dan pengetahuan mereka dengan
+            mudah.
+          </p> */}
           <form
             method="POST"
             action=""
@@ -207,9 +224,12 @@ function Landing() {
           <div className="about-footer w-[400px]">
             <h1 className="text-xl font-bold">Apa itu Benkyou?</h1>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-              nemo minima assumenda quis vel ipsum ipsam eligendi voluptatum?
-              Explicabo earum
+              Bankyou adalah platform e-learning inovatif yang dirancang untuk
+              memberikan pengalaman belajar yang efektif, fleksibel, dan
+              interaktif bagi pengguna. Dengan berbagai materi edukatif yang
+              berkualitas, Bankyou membantu siswa, mahasiswa, serta profesional
+              dalam mengembangkan keterampilan dan pengetahuan mereka dengan
+              mudah.
             </p>
           </div>
           <div className="link-footer">

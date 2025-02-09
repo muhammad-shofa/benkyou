@@ -87,6 +87,8 @@ router.post("/getMaterialsByIds", MaterialController.getMaterialsByIds);
 // Quizzes Router
 router.get("/quiz", QuizController.findQuizzes);
 router.get("/quiz/:quiz_id", QuizController.detailsQuizQuestion);
+router.post("/create-quiz", QuizController.createQuiz);
+router.delete("/delete-quiz/:quiz_id", QuizController.deleteQuiz);
 
 // Upload Profile Picture
 router.post("/upload", upload.single("profilePicture"), async (req, res) => {
